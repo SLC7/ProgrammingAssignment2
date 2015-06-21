@@ -3,18 +3,20 @@
 ## This script contains two functions that are used to create a special
 ## 'matrix' object that stores a matrix and caches its inverse. Please note
 ## that the structure of the code was provided in the Assignment example by 
-## Dr. Peng is utilized here. Minor changes were required for code modification 
-## of the example to achieve the assignmen objectives. 
+## Dr. Peng on "Coursera - R Programming" website. Minor changes were required 
+## to modify the example code to achieve the assignment objectives. 
 
-## The first function, `makeCacheMatrix` creates a special "matrix", 
-## object that can cache its inverse. The output is a list of:
-## (a) set the value of the matrix, (b) get the value of the matrix, 
-## (c) set the value of the inverse of the matrix, (d) get the value 
-## of the inverse matrix
-
+## The first function, `makeCacheMatrix` creates a special "matrix" 
+## object that can cache its inverse. The special matrix object is really a 
+## list of functions. The first, 'get' simply returns the matrix 'x' from the
+## main function. 'Set' changes the matrix, if necessary.
+## Setinverse is a function that stores the value of the input for the matrix inversion 
+## to the variable 'n' in the main function. It does not actually calculate the inverse.
+## Getinverse returns the value of 'n'.
 
 makeCacheMatrix <- function(x = matrix()) {
 			## Return a matrix 'x'
+			## Set 'n' to null, in case there is an old value
 			n <- NULL
 			set <- function(y = matrix()) {
 					x <<- y
@@ -24,9 +26,9 @@ makeCacheMatrix <- function(x = matrix()) {
 			setinverse <- function(solve) n <<- solve
 			getinverse <- function() n
 			
-			## create a list to store the value of the matrix 'x',
-			## and to store the value of the inverse of 'x',
-			## with parameters to both 'set' and 'get' the matrix and its inverse
+			## create a list, which is really a series of functions to set and get 
+			## the value of the matrix, and set and get the value of the inverse of 
+			## the matrix
 			
 			list(set = set, get = get,
 					setinverse = setinverse,
@@ -43,15 +45,21 @@ makeCacheMatrix <- function(x = matrix()) {
 ## inverse in the cache via the 'setinverse' function.
 
 cacheSolve <- function(x, ...) {
-        ## Assign 'n' to be value in 'getinverse'
+        ## Pass matrix 'x' to new function with arguments
         n <- x$getinverse()
-        ## checks if 'n' contains cached matrix inverse
+        
+        ## checks if 'n' exists and is not NULL. If there is a stored value
+        ## for the inverse of the matrix, it is returned.
         if(!is.null(n)) {
         		message("getting cached matrix inverse")
         		return(n)
         }
+        
+        ## the matrix from 'makeCacheMatrix' is assigned to a new variable
+        ## 'matrix_inverse'
         matrix_inverse <- x$get()
-        ## solves for matrix inverse
+        
+        ## solves for matrix inverse and stores it
         n <- solve(matrix_inverse, ...)
         x$setinverse(n)
         n
