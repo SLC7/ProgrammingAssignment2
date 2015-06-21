@@ -1,7 +1,10 @@
 
 
 ## This script contains two functions that are used to create a special
-## 'matrix' object that stores a matrix and caches its inverse.
+## 'matrix' object that stores a matrix and caches its inverse. Please note
+## that the structure of the code was provided in the Assignment example by 
+## Dr. Peng is utilized here. Minor changes were required for code modification 
+## of the example to achieve the assignmen objectives. 
 
 ## The first function, `makeCacheMatrix` creates a special "matrix", 
 ## object that can cache its inverse. The output is a list of:
